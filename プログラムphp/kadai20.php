@@ -1,0 +1,38 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head><title>mysql TEST</title></head>
+<body>
+<?php
+print "<h1> kadai20.php 作者 佐々木(a23i093)</h1>\n";
+
+//(1)PDOのクラスで、$dbs,$user,$passwordを設定して、インスタンスを作る。 
+$dbs = 'mysql:dbname=testdb1;host=localhost';
+$user = 'root';
+$password="";
+
+$pdo = new PDO($dbs, $user, $password);
+//$pdo = new PDO("mysql:host=127.0.0.1;dbname=supermarket_db1;charset=utf8", "root", "");
+
+//(2) 命令の文字列を$queryに入れる
+$query = "INSERT INTO producttable(number, name1, name2) VALUES(2,'melon',500)";
+$stmt = $pdo->prepare($query);  //実行の準備
+$stmt -> execute();     //実行
+
+$query = "INSERT INTO producttable(number, name1, name2) VALUES(3,'orange',200)";
+$stmt = $pdo->prepare($query);
+$stmt -> execute();
+
+//SELECTのPDOでの実行
+$query = "SELECT * FROM producttable";
+$stmt = $pdo->prepare($query);
+$stmt -> execute();
+
+//SQLの実行結果の取得 fetchで連想配列で取得
+while($info = $stmt -> fetch(PDO::FETCH_ASSOC)){
+    print (" {$info['number']}:{$info['name1']}:{$info['name2']} <br>\n");
+}
+
+
+?>
+</body>
+</html>
